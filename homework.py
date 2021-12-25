@@ -20,7 +20,7 @@ class InfoMessage:
                 f'Длительность: {self.duration:.3f} ч.; '
                 f'Дистанция: {self.distance:.3f} км; '
                 f'Ср. скорость: {self.speed:.3f} км/ч; '
-                f'Потрачено ккал: {self.calories:.3f}')
+                f'Потрачено ккал: {self.calories:.3f}.')
 
 
 class Training:
@@ -59,9 +59,8 @@ class Training:
                            duration=self.duration,
                            distance=self.get_distance(),
                            speed=self.get_mean_speed(),
-                           calories=self.get_spent_calories()
-                           )
-        return (info.get_message())
+                           calories=self.get_spent_calories())
+        return info
 
 
 class Running(Training):
@@ -138,23 +137,22 @@ def read_package(workout_type: str, data: list) -> Training:
     """Прочитать данные полученные от датчиков."""
 
     training = {'RUN': Running, 'WLK': SportsWalking, 'SWM': Swimming}
-    try:
-        return training[workout_type](*data)
-    except TypeError:
-        print('ошибка')
+    
+    return training[workout_type](*data)
 
 
 def main(training: Training) -> None:
     """Главная функция."""
 
-    print(training.show_training_info())
+    info = training.show_training_info()
+    print(info.get_message())
 
 
 if __name__ == '__main__':
     packages = [
         ('SWM', [720, 1, 80, 25, 40]),
         ('RUN', [15000, 1, 75]),
-        ('WLK', [9000, 1, 75, 180]),
+        ('WLK', [420, 4, 20, 42]),
     ]
 
     for workout_type, data in packages:
