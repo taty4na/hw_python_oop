@@ -1,3 +1,6 @@
+from typing import Type
+
+
 class InfoMessage:
     """Информационное сообщение о тренировке."""
 
@@ -51,7 +54,7 @@ class Training:
 
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий."""
-        pass
+        raise NotImplementedError('Метод расчета калорий не определен')
 
     def show_training_info(self) -> InfoMessage:
         """Вернуть информационное сообщение о выполненной тренировке."""
@@ -136,7 +139,11 @@ class Swimming(Training):
 def read_package(workout_type: str, data: list) -> Training:
     """Прочитать данные полученные от датчиков."""
 
-    training = {'RUN': Running, 'WLK': SportsWalking, 'SWM': Swimming}
+    training: dict[str, Type[Training]] = {'RUN': Running,
+                                           'WLK': SportsWalking,
+                                           'SWM': Swimming}
+    if workout_type not in training:
+        raise ValueError(f'{workout_type} - тренировка не определена')
     return training[workout_type](*data)
 
 
